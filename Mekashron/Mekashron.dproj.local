@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>1899.12.30 00:00:00.000.915,C:\Tools\Delphi_Projects\Project_4\Main.pas=C:\Users\Andrew\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.708,=C:\Tools\Delphi_Projects\Project_4\IBusinessAPI1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.091,C:\Tools\Delphi_Projects\Project_4\DataExport.pas=C:\Tools\Delphi_Projects\Project_4\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.677,C:\Tools\Delphi_Projects\Project_4\DataBase.pas=C:\Tools\Delphi_Projects\Project_4\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.352,C:\Tools\Delphi_Projects\Project_4\DBSettings.pas=C:\Tools\Delphi_Projects\Project_4\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.726,C:\Tools\Delphi_Projects\Project_4\Mekashron.dproj=C:\Users\Andrew\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.915,C:\Tools\Delphi_Projects\Project_4\Main.dfm=C:\Users\Andrew\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.108,C:\Tools\Delphi_Projects\Project_4\Calculator.pas=C:\Tools\Delphi_Projects\Project_4\ICalculator.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.392,=C:\Tools\Delphi_Projects\Project_4\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.835,=C:\Tools\Delphi_Projects\Project_4\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.695,=C:\Tools\Delphi_Projects\Project_4\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.812,=C:\Tools\Delphi_Projects\Project_4\IBusinessAPI.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.156,=C:\Tools\Delphi_Projects\Project_4\Calculator.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.180,=C:\Users\Andrew\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.690,C:\Tools\Delphi_Projects\Project_4\IBusinessAPI.pas=</Transaction>
+  </Transactions>
+</BorlandProject>
