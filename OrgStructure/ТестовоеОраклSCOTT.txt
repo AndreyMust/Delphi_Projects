@@ -1,0 +1,151 @@
+﻿Тестовое задание
+
+В заданиях Delphi желательно использовать компонент ODAC (Oracle data access).
+
+
+1. Написать хранимую функцию Oracle, результатом которой бы являлся md5 входного значения.
+
+create or replace
+function ora_md5(text in varchar2)
+return varchar2 is
+hash_value varchar2(32);
+begin
+  select standard_hash(text, 'MD5') 
+  into hash_value
+  from dual;
+  return hash_value;
+end;
+
+
+2. Написать хранимую функцию Oracle, результатом которой бы являлась дата, усеченная с точностью до 30 минут.
+
+create or replace
+function ora_round_time(in_date in date)
+return date is
+out_date date;
+begin
+  select in_date  - mod(in_date - trunc(in_date),1/48)
+  into out_date
+  from dual;
+  return out_date;
+end;
+
+3. Допустим, есть таблица без данных, вида:
+
+CREATE TABLE SCOTT.OBJECTS
+(
+  OBJECT_ID    NUMBER,
+  OWNER        VARCHAR2(30),
+  OBJECT_NAME  VARCHAR2(30),
+  OBJECT_TYPE  VARCHAR2(19),
+  CREATED      DATE
+);
+
+ALTER TABLE SCOTT.OBJECTS ADD (
+  CONSTRAINT PK_OBJECTS
+ PRIMARY KEY
+ (OBJECT_ID));
+
+CREATE INDEX SCOTT.IDX_OBJECTS_OBJECTNAME ON SCOTT.OBJECTS
+(OBJECT_NAME);
+
+CREATE INDEX SCOTT.IDX_OBJECTS_OBJECTTYPE ON SCOTT.OBJECTS
+(OBJECT_TYPE);
+
+Этот запрос более правильный, 
+Ожидается, что скорость выполнение будет немного выше, так как будет происходить вставка данных, 
+упорядоченных по ключу OBJECT_ID в соотвествии с физич расположением, и потребуется меньше времени вставку 
+на балансировку дерева.
+
+   insert into SCOTT.OBJECTS select object_id, owner, object_name, object_type, created 
+   from all_objects 
+   order by object_id asc;
+
+
+4. Для таблицы из задания №3 необходимо добавить триггер, который будет генерировать OBJECT_ID при вставки 
+   новой записи, если только OBJECT_ID не указан явно.
+
+CREATE SEQUENCE sq_OBJECTS
+START WITH 1 INCREMENT BY 1 NOMAXVALUE;
+
+CREATE OR REPLACE TRIGGER tr_OBJECTS before INSERT ON OBJECTS FOR each row
+BEGIN
+  IF :new.OBJECT_ID IS NULL
+  THEN
+   :new.OBJECT_ID := sq_OBJECTS.NEXTVAL;
+  END IF;
+END;
+
+5. Написать запрос соединив таблицы SCOTT.DEPT и SCOTT.EMP по deptno, выбрать следующие 
+   данные НазваниеОтдела(dname), ИмяСлужащего(ename), Зарплату(sal), среднюю и максимальную зарплату 
+   служащего по отделу.
+
+select d.dname, e.ename, e.sal, avg_by_deptno, max_by_deptno
+from dept d
+inner join emp e on d.deptno = e.deptno
+outer apply 
+(
+   select round(avg(emp.sal)) as avg_by_deptno,
+   max(emp.sal) as max_by_deptno
+   from emp
+   where emp.deptno = d.deptno
+) 
+order by d.dname, e.ename
+
+6. Есть две процедуры:
+    1) begin
+         for x in 1 .. 100000 loop
+           execute immediate `insert into table (y) values (``||x||``)`;
+         end loop;
+       end;
+    2) begin
+         for x in 1 .. 100000 loop
+           insert into table (y) values (x);
+         end loop;
+       end;
+     Какая из этих процедур выполнится быстрее? Какой синтаксис более правильный? 
+     Почему?
+
+Запрос 2 выполняется быстрее, 
+В первом запроса строка динамического запроса происходит компиляция всякий раз в цикле.
+Динамические запросы используются, когда имя таблицы или название полей заранее не известно, или могут меняться.
+Так же лишнии кавычки, и можно переписать запрос и использование USING для передачи аргумента в дин. запрос.
+
+
+9. Необходимо спроектировать структуру таблиц для создания справочника по сотрудникам:
+•	ФИО сотрудника;
+•	должность;
+•	возраст;
+•	фотография;
+•	характеристика;
+•	должностной оклад;
+•	должностные обязанности.
+
+
+CREATE TABLE SCOTT.POSITIONS
+(
+  ID 		INTEGER GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1),
+  NAME		VARCHAR2(150),
+  DESCRIPTION	VARCHAR2(500),
+  SALARY  	NUMBER(7,2),
+  CONSTRAINT    PK_POSITIONS_ID PRIMARY KEY (ID)
+);
+
+
+CREATE TABLE SCOTT.EMPLOYERS
+(
+  ID 		INTEGER GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1),
+  FIO        	VARCHAR2(150),
+  AGE  		NUMBER,
+  PHOTO	        BLOB,
+  DESCRIPTION	VARCHAR2(500),
+  SALARY  	NUMBER(7,2),
+  POSITION_ID   NUMBER NOT NULL,
+
+  CONSTRAINT PK_EMPLOYERS_ID PRIMARY KEY (ID),
+  CONSTRAINT fk_POSITION
+    FOREIGN KEY (POSITION_ID)
+    REFERENCES POSITIONS(ID)
+);
+
+
