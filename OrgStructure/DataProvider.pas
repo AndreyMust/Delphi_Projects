@@ -50,8 +50,8 @@ begin
   OraSession.ConnectString := 'Direct=True;' +
                               'Home Name=orcl' +
                               'Host=localhost;' +
-                              'User ID=ANONYMOUS;' +
-                              'Password=123;' +
+                              'User ID=;' +
+                              'Password=;' +
                               'Login Prompt=False';
   OraSession.Connect;
 end;
